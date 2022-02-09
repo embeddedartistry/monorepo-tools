@@ -28,6 +28,10 @@ for PARAM in $@; do
     if [ "$SUBDIRECTORY" == "" ]; then
         SUBDIRECTORY=$REMOTE
     fi
+
+    echo "Fetching LFS files for remote '$REMOTE'"
+    git lfs fetch --all $REMOTE
+
     # Rewrite all branches from the first remote, only master branches from others
     if [ "$PARAM" == "$1" ]; then
         echo "Building all branches of the remote '$REMOTE'"

@@ -28,6 +28,8 @@ for PARAM in $@; do
     if [ "$SUBDIRECTORY" == "" ]; then
         SUBDIRECTORY=$REMOTE
     fi
+    echo "Fetching LFS files for remote '$REMOTE'"
+    git lfs fetch --all $REMOTE
     echo "Building branch 'master' of the remote '$REMOTE'"
     git checkout --detach $REMOTE/master
     $MONOREPO_SCRIPT_DIR/rewrite_history_into.sh $SUBDIRECTORY
