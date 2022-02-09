@@ -34,6 +34,7 @@ for PARAM in $@; do
     if [ $? -eq 0 ]; then
         echo "Pushing branch 'master' and all tags into '$REMOTE'"
         git push --tags $REMOTE master
+        git lfs push $REMOTE master
     else
         echo "Splitting repository for the remote '$REMOTE' failed! Not pushing anything into it."
     fi
