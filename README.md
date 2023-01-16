@@ -46,7 +46,7 @@ Optionally you can specify a directory where the repository will be located by p
 
 The command will rewrite history of all mentioned repositories as if they were developed in separate subdirectories.
 
-Only branches `master` will be merged together, other branches will be kept only from first package to avoid possible branch name conflicts.
+Only branches `main` will be merged together, other branches will be kept only from first package to avoid possible branch name conflicts.
 
 ```
 ~/monorepo-tools/monorepo_build.sh \
@@ -55,7 +55,7 @@ Only branches `master` will be merged together, other branches will be kept only
 
 This may take a while, depending on the size of your repositories.
 
-Now your `master` branch should contain all packages in separate directories. For our example it would mean:
+Now your `main` branch should contain all packages in separate directories. For our example it would mean:
 * **main-repository/** - contains repository *vendor/main-repository*
 * **packages/**
   * **alpha/** - contains repository *vendor/alpha*
@@ -73,14 +73,14 @@ When you made your changes and would like to update the original repositories us
 ```
 
 This will push all relevant changes into all of your remotes.
-It will split and push your `master` branch along with all tags you added in this repository.
+It will split and push your `main` branch along with all tags you added in this repository.
 Other branches are not pushed.
 
 It may again take a while, depending on the size of your monorepo.
 
 ***Note:***  
 *The commits in the split repositories should be identical to those from the original repo, keeping the git history intact.*
-*Thus, if you have checked out the original `master` previously, you should be able to fast-forward to the new version after splitting.*  
+*Thus, if you have checked out the original `main` previously, you should be able to fast-forward to the new version after splitting.*  
 *The only known exception is a signed commit (note that GitHub signs commits made via its web UI by default).*
 *If you have signed commits in your original repository, the split commits will NOT be signed.*
 *This will prevent `monorepo_split.sh` from pushing the unsigned commits to the remote.*  
@@ -114,13 +114,13 @@ Usage: `monorepo_build.sh <remote-name>[:<subdirectory>] <remote-name>[:<subdire
 
 ### [monorepo_split.sh](./monorepo_split.sh)
 
-Split monorepo built by `monorepo_build.sh` and push all `master` branches along with all tags into specified remotes.
+Split monorepo built by `monorepo_build.sh` and push all `main` branches along with all tags into specified remotes.
 
 Usage: `monorepo_split.sh <remote-name>[:<subdirectory>] <remote-name>[:<subdirectory>] ...`
 
 ### [monorepo_add.sh](./monorepo_add.sh)
 
-Add repositories to an existing monorepo from specified remotes. The remotes must be already added to your repository and fetched. Only master branch will be added from each repo.
+Add repositories to an existing monorepo from specified remotes. The remotes must be already added to your repository and fetched. Only main branch will be added from each repo.
 
 Usage: `monorepo_add.sh <remote-name>[:<subdirectory>] <remote-name>[:<subdirectory>] ...`
 
