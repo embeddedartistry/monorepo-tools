@@ -28,7 +28,7 @@ for PARAM in $@; do
         SUBDIRECTORY=$REMOTE
     fi
     # Rewrite git history of main branch
-    echo "Splitting repository for the remote '$REMOTE'"
+    echo "Splitting repository for the remote '$REMOTE' from subdirectory $SUBDIRECTORY"
     git checkout main
     $MONOREPO_SCRIPT_DIR/rewrite_history_from.sh $SUBDIRECTORY main $(git tag)
     if [ $? -eq 0 ]; then
