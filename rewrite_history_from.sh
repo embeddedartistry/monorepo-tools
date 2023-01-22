@@ -16,12 +16,12 @@ echo "Rewriting history from a subdirectory '$SUBDIRECTORY'"
 # Get directory of the other scripts
 MONOREPO_SCRIPT_DIR=$(dirname "$0")
 
-# Backup all monorepo tag refs because `git filter-branch` doesn't backup tags
+# Backup all monorepo tag refs because `git filter-repo` doesn't backup tags
 $MONOREPO_SCRIPT_DIR/tag_refs_backup.sh
 
 # Remove tags that don't contain any files in $SUBDIRECTORY
 # Removes refs only, because tags are objects that can be used later after `original_refs_restore.sh`
-# Removes also tags from $REV_LIST_PARAMS, so filter-branch filters only known tags (if they are present)
+# Removes also tags from $REV_LIST_PARAMS, so filter-repo filters only known tags (if they are present)
 for TAG in `git tag`
 do
     if [ `git ls-tree -r --name-only $TAG | grep -E "^\"*$SUBDIRECTORY/" | wc -l` == "0" ]; then

@@ -1,7 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-# Backup tag refs, because `git filter-branch` doesn't do it
-# Backup into refs/original-tags/ because `git filter-branch` needs /refs/original/ empty
+# Backup tag refs into refs/original-tags/, because `git filter-repo` doesn't do it
 #
 # Usage: tag_refs_backup.sh
 
