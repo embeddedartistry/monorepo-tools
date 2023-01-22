@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Rewrite git history so that only commits that made changes in a subdirectory are kept and rewrite all filepaths as if it was root
 # You can use arguments for "git rev-list" to specify what commits to rewrite (defaults to rewriting history of the checked-out branch)
@@ -15,6 +15,7 @@ echo "Rewriting history from a subdirectory '$SUBDIRECTORY'"
 
 # Get directory of the other scripts
 MONOREPO_SCRIPT_DIR=$(dirname "$0")
+
 # Backup all monorepo tag refs because `git filter-branch` doesn't backup tags
 $MONOREPO_SCRIPT_DIR/tag_refs_backup.sh
 
@@ -42,16 +43,5 @@ else
     XARGS_OPTS="-r -0"
     SED_OPTS="-r"
 fi
-SUBDIRECTORY=$SUBDIRECTORY SUBDIRECTORY_SED=${SUBDIRECTORY//-/\\-} TAB=$'\t' XARGS_OPTS=$XARGS_OPTS SED_OPTS=$SED_OPTS git filter-branch \
-    --index-filter '
-    git -c core.quotepath=false ls-files | grep -vE "^\"*$SUBDIRECTORY/" | tr "\n" "\0" | xargs $XARGS_OPTS git rm -q --cached
-    if [ "$(git ls-files)" != "" ]; then
-        git ls-files -s | sed $SED_OPTS "s-($TAB\"*)$SUBDIRECTORY_SED/-\1-" | GIT_INDEX_FILE=$GIT_INDEX_FILE.new git update-index --index-info && mv $GIT_INDEX_FILE.new $GIT_INDEX_FILE
-    fi' \
-    --commit-filter 'git_commit_non_empty_tree "$@"' \
-    --tag-name-filter 'cat' \
-    -- $REV_LIST_PARAMS
 
-# Moves backup monorepo tag refs to the same group with automatic backup from `git filter-branch`
-# so tags can be restored by `original_refs_restore.sh`
-$MONOREPO_SCRIPT_DIR/tag_refs_move_to_original.sh
+git filter-repo --subdirectory-filter $SUBDIRECTORY --refs main $(git tag -l) --force

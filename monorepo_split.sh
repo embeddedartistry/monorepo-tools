@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Split monorepo and push all main branches and all tags into specified remotes
 # You must first build the monorepo via "monorepo_build" (uses same parameters as "monorepo_split")
@@ -17,8 +17,9 @@ if [ "$#" -lt "1" ]; then
 fi
 # Get directory of the other scripts
 MONOREPO_SCRIPT_DIR=$(dirname "$0")
-# Wipe original refs (possible left-over back-up after rewriting git history)
-$MONOREPO_SCRIPT_DIR/original_refs_wipe.sh
+
+git branch main-checkpoint
+
 for PARAM in $@; do
     # Parse parameters in format <remote-name>[:<subdirectory>]
     PARAM_ARR=(${PARAM//:/ })
@@ -30,7 +31,7 @@ for PARAM in $@; do
     # Rewrite git history of main branch
     echo "Splitting repository for the remote '$REMOTE' from subdirectory $SUBDIRECTORY"
     git checkout main
-    $MONOREPO_SCRIPT_DIR/rewrite_history_from.sh $SUBDIRECTORY main $(git tag)
+    $MONOREPO_SCRIPT_DIR/rewrite_history_from.sh $SUBDIRECTORY main $(git tag -l)
     if [ $? -eq 0 ]; then
         echo "Pushing branch 'main' and all tags into '$REMOTE'"
         git push --tags $REMOTE main
@@ -38,7 +39,12 @@ for PARAM in $@; do
     else
         echo "Splitting repository for the remote '$REMOTE' failed! Not pushing anything into it."
     fi
-    # Restore the original history from back-up
-    $MONOREPO_SCRIPT_DIR/original_refs_restore.sh
 done
+
+# Moves backup monorepo tag refs to the same group with automatic backup from `git filter-branch`
+# so tags can be restored by `original_refs_restore.sh`
+$MONOREPO_SCRIPT_DIR/tag_refs_restore.sh
+
+git reset main-checkpoint --hard
+git branch -d main-checkpoint
 

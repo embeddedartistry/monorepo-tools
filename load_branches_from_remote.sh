@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Delete all local branches and create all non-remote-tracking branches of a specified remote
 #
