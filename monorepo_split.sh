@@ -39,12 +39,9 @@ for PARAM in $@; do
     else
         echo "Splitting repository for the remote '$REMOTE' failed! Not pushing anything into it."
     fi
+    git reset main-checkpoint --hard
+    $MONOREPO_SCRIPT_DIR/tag_refs_restore.sh
 done
 
-# Moves backup monorepo tag refs to the same group with automatic backup from `git filter-branch`
-# so tags can be restored by `original_refs_restore.sh`
-$MONOREPO_SCRIPT_DIR/tag_refs_restore.sh
-
-git reset main-checkpoint --hard
 git branch -d main-checkpoint
 
