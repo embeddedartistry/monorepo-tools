@@ -1,17 +1,20 @@
-# Shopsys Monorepo Tools
+# Embedded Artistry Monorepo Tools
 
-[![Mentioned in Awesome Monorepo](https://awesome.re/mentioned-badge.svg)](https://github.com/korfuri/awesome-monorepo)
-
-**This package is used for splitting our monorepo and we share it with our community as it is. We do not intend to support or develop it any further. Feel free to fork it and adjust for your own need.**
+**This package is used for splitting the Embedded Artistry monorepo and we share it with our community as it is. We are willing to consider issues and pull requests, but this project's primary purpose is to serve out**
 
 Tools for building and splitting monolithic repository from existing packages.
-You can read about pros and cons of monorepo approach on the [Shopsys Framework Blog](https://blog.shopsys.com/how-to-maintain-multiple-git-repositories-with-ease-61a5e17152e0).
 
 We created these scripts because we couldn't find a tool that would keep the git history of subpackages unchanged.
 
 You may need to update your `git` (tested on `2.16.1`).
 
-This repository is maintained by [shopsys/shopsys](https://github.com/shopsys/shopsys) monorepo, information about changes is in [monorepo CHANGELOG.md](https://github.com/shopsys/shopsys/blob/master/CHANGELOG.md).
+This repository is maintained in [embeddedartistry/monorepo](https://github.com/embeddedartistry/monorepo).
+
+Primary differences from the original [shopsys/monorepo-tools](https://github.com/shopsys/monorepo-tools):
+
+- Uses git filter-repo, resulting in drastically improved performance
+- Supports git-lfs files
+- Works with `main` branch, not `master`
 
 ## Quick start
 
@@ -20,7 +23,7 @@ This repository is maintained by [shopsys/shopsys](https://github.com/shopsys/sh
 First download this repository so you can use the tools (eg. into `~/monorepo-tools`).
 
 ```
-git clone https://github.com/shopsys/monorepo-tools ~/monorepo-tools
+git clone https://github.com/embeddedartistry/monorepo-tools ~/monorepo-tools
 ```
 
 ### 2. Preparing an empty repository with added remotes
@@ -160,24 +163,14 @@ Backup tag refs into `refs/original-tags/`
 
 Usage: `tag_refs_backup.sh`
 
-### [tag_refs_move_to_original.sh](./tag_refs_move_to_original.sh)
+### [tag_refs_restore.sh](./tag_refs_move_to_original.sh)
 
-Move tag refs from `refs/original-tags/` into `refs/original/`
+Move tag refs from `refs/original-tags/` into `refs/tags/`
 
-Usage: `tag_refs_move_to_original.sh`
+Usage: `tag_refs_restore.sh`
 
-## Contributing
-Thank you for your contributions to Shopsys Monorepo Tools package.
-Together we are making Shopsys Framework better.
+## Contributing and Support
 
 This repository is READ-ONLY.
-If you want to [report issues](https://github.com/shopsys/shopsys/issues/new) and/or send [pull requests](https://github.com/shopsys/shopsys/compare),
-please use the main [Shopsys repository](https://github.com/shopsys/shopsys).
 
-Please, check our [Contribution Guide](https://github.com/shopsys/shopsys/blob/master/CONTRIBUTING.md) before contributing.
-
-## Support
-What to do when you are in troubles or need some help?
-The best way is to join our [Slack](https://join.slack.com/t/shopsysframework/shared_invite/zt-11wx9au4g-e5pXei73UJydHRQ7nVApAQ).
-
-If you want to [report issues](https://github.com/shopsys/shopsys/issues/new), please use the main [Shopsys repository](https://github.com/shopsys/shopsys).
+If you want to [report issues](https://github.com/embeddedartistry/monorepo/issues/new) and/or send [pull requests](https://github.com/embeddedartistry/monorepo/compare), please use the main [embeddedartistry/monorepo repository](https://github.com/embeddedartistry/monorepo).
