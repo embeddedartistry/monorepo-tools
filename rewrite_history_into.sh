@@ -14,4 +14,4 @@ REV_LIST_PARAMS=${@:2}
 echo "Rewriting history into a subdirectory '$SUBDIRECTORY'"
 # All paths in the index are prefixed with a subdirectory and the index is updated
 # Previous index file is replaced by a new one (otherwise each file would be in the index twice)
-git filter-repo --to-subdirectory-filter $SUBDIRECTORY
+git filter-repo --to-subdirectory-filter $SUBDIRECTORY --force
