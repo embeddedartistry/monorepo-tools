@@ -1,6 +1,6 @@
 # Embedded Artistry Monorepo Tools
 
-**This package is used for splitting the Embedded Artistry monorepo and we share it with our community as it is. We are willing to consider issues and pull requests, but this project's primary purpose is to serve out**
+**This package is used for splitting the Embedded Artistry monorepo and we share it with our community as it is. We are willing to consider issues and pull requests, but this project's primary purpose is to serve our own use case.**
 
 Tools for building and splitting monolithic repository from existing packages.
 
@@ -173,4 +173,4 @@ Usage: `tag_refs_restore.sh`
 
 This repository is READ-ONLY.
 
-If you want to [report issues](https://github.com/embeddedartistry/monorepo/issues/new) and/or send [pull requests](https://github.com/embeddedartistry/monorepo/compare), please use the main [embeddedartistry/monorepo repository](https://github.com/embeddedartistry/monorepo).
+You can report issues here, but it is better to [report issues](https://github.com/embeddedartistry/monorepo/issues/new) and/or send [pull requests](https://github.com/embeddedartistry/monorepo/compare) in the main [embeddedartistry/monorepo repository](https://github.com/embeddedartistry/monorepo).
