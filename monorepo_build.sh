@@ -48,7 +48,7 @@ for PARAM in $@; do
         echo "Building all branches of the remote '$REMOTE'"
         $MONOREPO_SCRIPT_DIR/load_branches_from_remote.sh $REMOTE
         $MONOREPO_SCRIPT_DIR/rewrite_history_into.sh $SUBDIRECTORY --refs $(git branch --format='%(refname:short)')
-        MERGE_REFS='$BRANCH_TO_MERGE'
+        MERGE_REFS=$BRANCH_TO_MERGE
     else
         echo "Building branch '$BRANCH_TO_MERGE' of the remote '$REMOTE'"
         git checkout --detach $REMOTE/$BRANCH_TO_MERGE
