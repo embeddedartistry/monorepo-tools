@@ -14,7 +14,8 @@ Primary differences from the original [shopsys/monorepo-tools](https://github.co
 
 - Uses git filter-repo, resulting in drastically improved performance
 - Supports git-lfs files
-- Works with `main` branch, not `master`
+- Works with `main` branch by default
+- Provides an option for overriding which branch will be merged in or split out
 
 ## Quick start
 
@@ -113,31 +114,31 @@ For detailed information go to the scripts themselves and read the comments.
 
 Build monorepo from specified remotes. The remotes must be already added to your repository and fetched.
 
-Usage: `monorepo_build.sh <remote-name>[:<subdirectory>] <remote-name>[:<subdirectory>] ...`
+Usage: `monorepo_build.sh <remote-name>[:<subdirectory>][:<branch>] <remote-name>[:<subdirectory>][:<branch>] ...`
 
 ### [monorepo_split.sh](./monorepo_split.sh)
 
 Split monorepo built by `monorepo_build.sh` and push all `main` branches along with all tags into specified remotes.
 
-Usage: `monorepo_split.sh <remote-name>[:<subdirectory>] <remote-name>[:<subdirectory>] ...`
+Usage: `monorepo_split.sh <remote-name>[:<subdirectory>][:<branch>] <remote-name>[:<subdirectory>][:<branch>] ...`
 
 ### [monorepo_add.sh](./monorepo_add.sh)
 
 Add repositories to an existing monorepo from specified remotes. The remotes must be already added to your repository and fetched. Only main branch will be added from each repo.
 
-Usage: `monorepo_add.sh <remote-name>[:<subdirectory>] <remote-name>[:<subdirectory>] ...`
+Usage: `monorepo_add.sh <remote-name>[:<subdirectory>][:<branch>] <remote-name>[:<subdirectory>][:<branch>] ...`
 
 ### [rewrite_history_into.sh](./rewrite_history_into.sh)
 
 Rewrite git history (even tags) so that all filepaths are in a specific subdirectory.
 
-Usage: `rewrite_history_into.sh <subdirectory> [<rev-list-args>]`
+Usage: `rewrite_history_into.sh <subdirectory> [<refs to keep>]`
 
 ### [rewrite_history_from.sh](./rewrite_history_from.sh)
 
 Rewrite git history (even tags) so that only commits that made changes in a subdirectory are kept and rewrite all filepaths as if it was root.
 
-Usage: `rewrite_history_from.sh <subdirectory> [<rev-list-args>]`
+Usage: `rewrite_history_from.sh <subdirectory> [<refs to export]`
 
 ### [original_refs_restore.sh](./original_refs_restore.sh)
 
