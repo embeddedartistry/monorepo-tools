@@ -41,7 +41,7 @@ for PARAM in $@; do
     git lfs fetch --all $REMOTE
     echo "Building branch '$BRANCH_TO_MERGE' of the remote '$REMOTE'"
     git checkout --detach $REMOTE/$BRANCH_TO_MERGE
-    $MONOREPO_SCRIPT_DIR/rewrite_history_into.sh $SUBDIRECTORY
+    $MONOREPO_SCRIPT_DIR/rewrite_history_into.sh $SUBDIRECTORY --refs HEAD
     MERGE_REFS="$MERGE_REFS $(git rev-parse HEAD)"
     # Wipe the back-up of original history
     $MONOREPO_SCRIPT_DIR/original_refs_wipe.sh
