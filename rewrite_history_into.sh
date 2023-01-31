@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -ex
 
 # Rewrite git history so that all filepaths are in a specific subdirectory
 # You can specify additional refs to further control what commits to rewrite.
@@ -14,4 +14,4 @@ SUBDIRECTORY=$1
 REF_LIST=${@:2}
 echo "Rewriting history into a subdirectory '$SUBDIRECTORY'"
 # All paths in the index are prefixed with a subdirectory and the index is updated
-git filter-repo --to-subdirectory-filter $SUBDIRECTORY --force $REF_LIST
+/Users/phillip/src/ea//git-filter-repo/git-filter-repo --to-subdirectory-filter $SUBDIRECTORY --force $REF_LIST --signed-commits=keep-in-msg

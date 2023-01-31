@@ -44,4 +44,4 @@ else
     SED_OPTS="-r"
 fi
 
-git filter-repo --subdirectory-filter $SUBDIRECTORY --refs main $(git tag -l) --force
+/Users/phillip/src/ea//git-filter-repo/git-filter-repo --subdirectory-filter $SUBDIRECTORY --refs main $(git tag -l) --force --signed-commits=restore-from-msg
