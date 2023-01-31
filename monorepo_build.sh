@@ -41,7 +41,7 @@ for PARAM in $@; do
     fi
 
     echo "Fetching LFS files for remote '$REMOTE'"
-    git lfs fetch --all $REMOTE
+    git lfs fetch --all $REMOTE $REMOTE/$BRANCH_TO_MERGE
 
     # Rewrite all branches from the first remote, only main/target branch from others
     if [ "$PARAM" == "$1" ]; then

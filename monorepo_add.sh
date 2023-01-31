@@ -38,7 +38,7 @@ for PARAM in $@; do
         BRANCH_TO_MERGE=main
     fi
     echo "Fetching LFS files for remote '$REMOTE'"
-    git lfs fetch --all $REMOTE
+    git lfs fetch --all $REMOTE $REMOTE/$BRANCH_TO_MERGE
     echo "Building branch '$BRANCH_TO_MERGE' of the remote '$REMOTE'"
     git checkout --detach $REMOTE/$BRANCH_TO_MERGE
     $MONOREPO_SCRIPT_DIR/rewrite_history_into.sh $SUBDIRECTORY --refs HEAD
