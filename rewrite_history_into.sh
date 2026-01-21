@@ -14,4 +14,4 @@ SUBDIRECTORY=$1
 REF_LIST=${@:2}
 echo "Rewriting history into a subdirectory '$SUBDIRECTORY'"
 # All paths in the index are prefixed with a subdirectory and the index is updated
-/Users/phillip/src/ea//git-filter-repo/git-filter-repo --to-subdirectory-filter $SUBDIRECTORY --force $REF_LIST --signed-commits=keep-in-msg
+git-filter-repo --to-subdirectory-filter $SUBDIRECTORY --force $REF_LIST
