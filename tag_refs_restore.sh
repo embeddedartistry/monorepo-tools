@@ -4,6 +4,6 @@
 #
 # Usage: tag_refs_restore.sh
 
-for TAG_REF in $(git for-each-ref --format="%(refname)" refs/tags/); do
-    git update-ref $TAG_REF refs/original-tags/$TAG_REF
+for TAG_REF in $(git for-each-ref --format="%(refname)" refs/original-tags/); do
+    git update-ref "${TAG_REF#refs/original-tags/}" $TAG_REF
 done
