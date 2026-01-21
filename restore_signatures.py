@@ -163,8 +163,8 @@ def restore_signatures(refs=None, verbose=False):
         stderr=subprocess.PIPE
     )
 
-    # Start git fast-import
-    import_cmd = ['git', 'fast-import', '--force', '--quiet']
+    # Start git fast-import (use core.ignorecase=false to match git-filter-repo behavior)
+    import_cmd = ['git', '-c', 'core.ignorecase=false', 'fast-import', '--force', '--quiet']
     import_proc = subprocess.Popen(
         import_cmd,
         stdin=subprocess.PIPE,
