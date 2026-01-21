@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Split monorepo and push all main branches and all tags into specified remotes
 # You must first build the monorepo via "monorepo_build" (uses same parameters as "monorepo_split")
@@ -62,6 +62,12 @@ for PARAM in $@; do
     # Rewrite git history of main branch
     echo "Splitting repository for the remote '$REMOTE' from subdirectory $SUBDIRECTORY"
     git checkout main
+
+    # Clear any previous filter-repo metadata to avoid conflicts with signature restoration
+    if [ -d .git/filter-repo ]; then
+        echo "Clearing previous filter-repo metadata..."
+        rm -rf .git/filter-repo
+    fi
 
     # Store GPG signatures in commit messages before filtering
     echo "Storing GPG signatures in commit messages..."
