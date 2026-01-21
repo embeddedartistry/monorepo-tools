@@ -9,6 +9,12 @@
 # But you must specify a directory for this to work (this can match the remote name if this is the
 # desired behavior).
 #
+# GPG Signature Preservation:
+# This script automatically preserves GPG commit signatures during the split process by:
+# 1. Storing signatures in commit messages before filtering (store_signatures.py)
+# 2. Restoring signatures from messages after filtering (restore_signatures.py)
+# Requires Python 3.6+ and Git 2.34+ for signature support.
+#
 # Usage: monorepo_split.sh <remote-name>[:<subdirectory>][:<branch>] <remote-name>[:<subdirectory>][:<branch>] ...
 #
 # Example: monorepo_split.sh main-repository package-alpha:packages/alpha:master \
@@ -56,8 +62,23 @@ for PARAM in $@; do
     # Rewrite git history of main branch
     echo "Splitting repository for the remote '$REMOTE' from subdirectory $SUBDIRECTORY"
     git checkout main
+
+    # Store GPG signatures in commit messages before filtering
+    echo "Storing GPG signatures in commit messages..."
+    python3 $MONOREPO_SCRIPT_DIR/store_signatures.py --refs main $(git tag -l)
+    if [ $? -ne 0 ]; then
+        echo "Warning: Failed to store signatures, continuing anyway..."
+    fi
+
     $MONOREPO_SCRIPT_DIR/rewrite_history_from.sh $SUBDIRECTORY main $(git tag -l)
     if [ $? -eq 0 ]; then
+        # Restore GPG signatures from commit messages after filtering
+        echo "Restoring GPG signatures from commit messages..."
+        python3 $MONOREPO_SCRIPT_DIR/restore_signatures.py --refs main $(git tag -l)
+        if [ $? -ne 0 ]; then
+            echo "Warning: Failed to restore signatures, continuing anyway..."
+        fi
+
         # Restore remote URL after git-filter-repo removed it
         if [ ! -z "${REMOTE_URLS[$REMOTE]}" ]; then
             git remote remove $REMOTE 2>/dev/null
