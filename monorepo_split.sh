@@ -103,7 +103,7 @@ for PARAM in $@; do
 
         echo "Pushing changes made on 'main' and all tags into '$REMOTE/$BRANCH_TO_MERGE'"
         git push --tags $REMOTE main:$BRANCH_TO_MERGE
-        git lfs push $REMOTE main:$BRANCH_TO_MERGE
+        git lfs push $REMOTE main
     else
         echo "Splitting repository for the remote '$REMOTE' failed! Not pushing anything into it."
     fi
