@@ -26,6 +26,20 @@ MONOREPO_SCRIPT_DIR=$(dirname "$0")
 
 git branch main-checkpoint
 
+# Capture remote URLs before git-filter-repo removes them
+declare -A REMOTE_URLS
+for PARAM in $@; do
+    PARAM_ARR=(${PARAM//:/ })
+    REMOTE=${PARAM_ARR[0]}
+    REMOTE_URL=$(git remote get-url $REMOTE 2>/dev/null)
+    if [ $? -eq 0 ]; then
+        REMOTE_URLS[$REMOTE]=$REMOTE_URL
+        echo "Captured remote URL for '$REMOTE': $REMOTE_URL"
+    else
+        echo "Warning: Remote '$REMOTE' does not exist. Skipping."
+    fi
+done
+
 for PARAM in $@; do
     # Parse parameters in format <remote-name>[:<subdirectory>]
     PARAM_ARR=(${PARAM//:/ })
@@ -44,6 +58,13 @@ for PARAM in $@; do
     git checkout main
     $MONOREPO_SCRIPT_DIR/rewrite_history_from.sh $SUBDIRECTORY main $(git tag -l)
     if [ $? -eq 0 ]; then
+        # Restore remote URL after git-filter-repo removed it
+        if [ ! -z "${REMOTE_URLS[$REMOTE]}" ]; then
+            git remote remove $REMOTE 2>/dev/null
+            git remote add $REMOTE "${REMOTE_URLS[$REMOTE]}"
+            echo "Restored remote '$REMOTE' with URL: ${REMOTE_URLS[$REMOTE]}"
+        fi
+
         echo "Pushing changes made on 'main' and all tags into '$REMOTE/$BRANCH_TO_MERGE'"
         git push --tags $REMOTE main:$BRANCH_TO_MERGE
         git lfs push $REMOTE main:$BRANCH_TO_MERGE
