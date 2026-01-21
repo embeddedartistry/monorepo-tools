@@ -69,20 +69,29 @@ for PARAM in $@; do
         rm -rf .git/filter-repo
     fi
 
-    # Store GPG signatures in commit messages before filtering
-    echo "Storing GPG signatures in commit messages..."
-    python3 $MONOREPO_SCRIPT_DIR/store_signatures.py --refs main $(git tag -l)
-    if [ $? -ne 0 ]; then
-        echo "Warning: Failed to store signatures, continuing anyway..."
+    # Check if there are any GPG signatures in the repository
+    HAS_SIGNATURES=$(git log main $(git tag -l) --show-signature 2>&1 | grep -c "gpgsig" || true)
+
+    # Store GPG signatures in commit messages before filtering (only if signatures exist)
+    if [ "$HAS_SIGNATURES" -gt 0 ]; then
+        echo "Found $HAS_SIGNATURES GPG signature(s), storing in commit messages..."
+        python3 $MONOREPO_SCRIPT_DIR/store_signatures.py --refs main $(git tag -l)
+        if [ $? -ne 0 ]; then
+            echo "Warning: Failed to store signatures, continuing anyway..."
+        fi
+    else
+        echo "No GPG signatures found, skipping signature preservation..."
     fi
 
     $MONOREPO_SCRIPT_DIR/rewrite_history_from.sh $SUBDIRECTORY main $(git tag -l)
     if [ $? -eq 0 ]; then
-        # Restore GPG signatures from commit messages after filtering
-        echo "Restoring GPG signatures from commit messages..."
-        python3 $MONOREPO_SCRIPT_DIR/restore_signatures.py --refs main $(git tag -l)
-        if [ $? -ne 0 ]; then
-            echo "Warning: Failed to restore signatures, continuing anyway..."
+        # Restore GPG signatures from commit messages after filtering (only if they were stored)
+        if [ "$HAS_SIGNATURES" -gt 0 ]; then
+            echo "Restoring GPG signatures from commit messages..."
+            python3 $MONOREPO_SCRIPT_DIR/restore_signatures.py --refs main $(git tag -l)
+            if [ $? -ne 0 ]; then
+                echo "Warning: Failed to restore signatures, continuing anyway..."
+            fi
         fi
 
         # Restore remote URL after git-filter-repo removed it
